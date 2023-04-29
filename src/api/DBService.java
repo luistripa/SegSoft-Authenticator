@@ -10,10 +10,11 @@ public interface DBService {
      *
      * @param name The account name
      * @param hash The password hash
-     * @param is_locked Whether the account is locked
+     * @param is_locked Whether the account is locked or not
+     * @param logged_in Whether the account is logged in or not
      * @throws SQLException If an error occurs while creating the account
      */
-    void createAccount(String name, String hash, boolean is_locked) throws SQLException;
+    void createAccount(String name, String hash, boolean is_locked, boolean logged_in) throws SQLException;
 
     /**
      * Deletes an existing account from the database.
@@ -40,4 +41,8 @@ public interface DBService {
      * @throws SQLException If an error occurs while retrieving the account
      */
     Optional<Account> getAccount(String name) throws SQLException;
+
+    void login(String name) throws SQLException;
+
+    void logout(String name) throws SQLException;
 }

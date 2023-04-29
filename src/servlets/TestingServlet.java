@@ -1,6 +1,8 @@
 package servlets;
 
+import api.Authenticator;
 import api.DBService;
+import impl.AuthenticatorClass;
 import impl.DBServiceClass;
 
 import javax.servlet.*;

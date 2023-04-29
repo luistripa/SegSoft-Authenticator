@@ -92,7 +92,16 @@ public interface Authenticator {
      * @param resp
      * @return Account object if authentication is successful
      */
-    Account check_authenticated_request(HttpServletRequest req, HttpServletResponse resp) throws AuthenticationException;
+    Account check_authenticated_request(HttpServletRequest req, HttpServletResponse resp) throws AuthenticationException, UndefinedAccountException;
+
+    /**
+     * Generates a new JWT for the given Account object.
+     *
+     * @param acc The account object
+     * @return A String with the JWT
+     * @throws AuthenticatorException If the JWT generation fails
+     */
+    String generateToken(Account acc) throws AuthenticatorException;
 
     /**
      * Logs an account out (setting logged_in to false)

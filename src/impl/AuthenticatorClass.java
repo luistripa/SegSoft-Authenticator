@@ -22,11 +22,17 @@ import java.util.Optional;
 
 public class AuthenticatorClass implements Authenticator {
 
+    private final static String SECRET = "Super Secret String";
+    private final static String ISSUER = "Authenticator";
+    private final static int EXPIRATION_TIME = 60 * 30;
+
     private final DBService dbService;
 
     public AuthenticatorClass() {
         dbService = DBServiceClass.getInstance();
     }
+
+    // TODO: Log all operations to the database
 
     @Override
     public void create_account(String name, String pwd1, String pwd2) throws AccountAlreadyExistsException, DifferentPasswordsException, AuthenticatorException {
