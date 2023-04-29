@@ -1,11 +1,11 @@
 package api;
 
-import api.exceptions.AuthenticationException;
-import api.exceptions.LockedAccountException;
-import api.exceptions.UndefinedAccountException;
+import api.exceptions.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.Optional;
 
 
 public interface Authenticator {
@@ -19,9 +19,9 @@ public interface Authenticator {
      *
      * @param name The account name
      * @param pwd1 The password (clear text)
-     * @param pwd2 The password confirmation (plaintext) - must be equal to pwd1q
+     * @param pwd2 The password confirmation (plaintext) - must be equal to pwd1
      */
-    void create_account(String name, String pwd1, String pwd2);
+    void create_account(String name, String pwd1, String pwd2) throws AuthenticationException, DifferentPasswordsException, AccountAlreadyExistsException;
 
     /**
      * Deletes an existing account object.
@@ -33,7 +33,7 @@ public interface Authenticator {
      *
      * @param name The name of the account to delete
      */
-    void delete_account(String name);
+    void delete_account(String name) throws SQLException, AccountUnlockedException;
 
     /**
      * Returns a clone (readonly) from an existing account object.
@@ -41,7 +41,7 @@ public interface Authenticator {
      * @param name The name of the account to return
      * @return Account object
      */
-    Account get_account(String name);
+    Optional<Account> get_account(String name) throws SQLException;
 
     /**
      * Changes the password of the account.
@@ -54,7 +54,7 @@ public interface Authenticator {
      * @param pwd1 Password (plaintext)
      * @param pwd2 Password confirmation (plaintext)
      */
-    void change_pwd(String name, String pwd1, String pwd2);
+    void change_pwd(String name, String pwd1, String pwd2) throws DifferentPasswordsException, AuthenticatorException;
 
     /**
      * Authenticates the caller.
@@ -69,7 +69,7 @@ public interface Authenticator {
      * @param pwd The password (plaintext)
      * @return The authenticated account if all checks pass.
      */
-    Account login(String name, String pwd) throws UndefinedAccountException, LockedAccountException, AuthenticationException;
+    Account login(String name, String pwd) throws UndefinedAccountException, AccountLockedException, AuthenticationException, AuthenticatorException;
 
     /**
      * Authenticate the caller on every servlet interaction.
@@ -99,5 +99,5 @@ public interface Authenticator {
      *
      * @param acc The account to logout
      */
-    void logout(Account acc);
+    void logout(Account acc) throws AuthenticatorException;
 }
