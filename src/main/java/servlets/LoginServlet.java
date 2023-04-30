@@ -2,8 +2,12 @@ package servlets;
 
 import api.Account;
 import api.Authenticator;
-import api.exceptions.*;
+import api.DBService;
+import api.exceptions.AccountLockedException;
+import api.exceptions.AuthenticationException;
+import api.exceptions.UndefinedAccountException;
 import impl.AuthenticatorClass;
+import impl.DBServiceClass;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,29 +16,29 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class CreateUserServlet extends HttpServlet {
+public class LoginServlet extends HttpServlet {
 
-    private final String webPage = """
+    private static DBService dbService = DBServiceClass.getInstance();
+
+    private String webPage = """
             <html>
                 <head>
                     <title>Login</title>
                 </head>
                 <body>
-                    <h1>Create User</h1>
-                    <form action="create-user" method="POST">
+                    <h1>Login</h1>
+                    <form action="login" method="POST">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" required>
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required>
-                        <label for="confpassword">Confirm Password</label>
-                        <input type="password" id="confpassword" name="confpassword" required>
-                        <input type="submit" value="Create User">
+                        <input type="submit" value="Login">
                     </form>
                 </body>
-            </html> 
+            </html>
             """;
 
-    private final Authenticator authenticator = new AuthenticatorClass();
+    private final Authenticator authenticator = AuthenticatorClass.getInstance();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         PrintWriter out = response.getWriter();
@@ -44,17 +48,19 @@ public class CreateUserServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String confpassword = request.getParameter("confpassword");
 
         try {
-            // TODO: Create user should only work for "root" user
+            Account account = authenticator.login(username, password);
 
-            authenticator.create_account(username, password, confpassword);
+            HttpSession session = request.getSession();
 
-            response.sendRedirect("ManageUsers");
+            String token = authenticator.generateToken(account);
+            session.setAttribute("token", token);
 
-        } catch (AuthenticationException | DifferentPasswordsException | AccountAlreadyExistsException e) {
-            response.sendRedirect("create-user");
+            response.sendRedirect("manage-users");
+
+        } catch (UndefinedAccountException | AuthenticationException | AccountLockedException e) {
+            response.sendRedirect("login");
         }
     }
 }

@@ -20,15 +20,15 @@ public class ManageUsersServlet extends HttpServlet {
                 </head>
                 <body>
                     <h1>Manage Users - ###</h1>
-                    <a href="http://localhost:8080/SegSoft-Authenticator/login">Login</a>
+                    <a href="http://localhost:8080/myApp/login">Login</a>
                     <br/>
-                    <a href="http://localhost:8080/SegSoft-Authenticator/logout">Logout</a>
+                    <a href="http://localhost:8080/myApp/logout">Logout</a>
                     <br/>
-                    <a href="http://localhost:8080/SegSoft-Authenticator/create-user">Create User</a>
+                    <a href="http://localhost:8080/myApp/create-user">Create User</a>
                     <br/>
-                    <a href="http://localhost:8080/SegSoft-Authenticator/delete-user">Delete User</a>
+                    <a href="http://localhost:8080/myApp/delete-user">Delete User</a>
                     <br/>
-                    <a href="http://localhost:8080/SegSoft-Authenticator/change-password">Change Password</a>
+                    <a href="http://localhost:8080/myApp/change-password">Change Password</a>
                 </body>
             </html>
             """;

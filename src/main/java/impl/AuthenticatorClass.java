@@ -28,6 +28,12 @@ public class AuthenticatorClass implements Authenticator {
 
     private final DBService dbService;
 
+    private static final AuthenticatorClass INSTANCE = new AuthenticatorClass();
+
+    public static AuthenticatorClass getInstance() {
+        return INSTANCE;
+    }
+
     public AuthenticatorClass() {
         dbService = DBServiceClass.getInstance();
     }
@@ -188,7 +194,6 @@ public class AuthenticatorClass implements Authenticator {
                 .sign(algorithm);
 
         } catch (JWTCreationException e){
-            // Invalid Signing configuration / Couldn't convert Claims.
             throw new AuthenticatorException(e);
         }
     }

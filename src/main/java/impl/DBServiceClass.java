@@ -24,9 +24,10 @@ public class DBServiceClass implements DBService {
 
     private DBServiceClass() {
         try {
+            Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(CONNECTION_STRING);
 
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
