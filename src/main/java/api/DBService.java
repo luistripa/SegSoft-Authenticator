@@ -33,6 +33,10 @@ public interface DBService {
      */
     void changePassword(String name, String newHash) throws SQLException;
 
+    void lockAccount(String name) throws SQLException;
+
+    void unlockAccount(String name) throws SQLException;
+
     /**
      * Gets an account with the given name from the database.
      *

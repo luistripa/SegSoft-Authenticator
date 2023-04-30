@@ -7,12 +7,12 @@
 
 
     <servlet>
-        <servlet-name>TestingServlet</servlet-name>
-        <servlet-class>servlets.TestingServlet</servlet-class>
+        <servlet-name>CounterServlet</servlet-name>
+        <servlet-class>servlets.CounterServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TestingServlet</servlet-name>
-        <url-pattern>/Test</url-pattern>
+        <servlet-name>CounterServlet</servlet-name>
+        <url-pattern>/counter</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -40,6 +40,51 @@
     <servlet-mapping>
         <servlet-name>CreateUserServlet</servlet-name>
         <url-pattern>/create-user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <servlet-class>servlets.DeleteUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteUserServlet</servlet-name>
+        <url-pattern>/delete-user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>servlets.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LockAccountServlet</servlet-name>
+        <servlet-class>servlets.LockAccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LockAccountServlet</servlet-name>
+        <url-pattern>/lock-account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UnlockAccountServlet</servlet-name>
+        <servlet-class>servlets.UnlockAccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UnlockAccountServlet</servlet-name>
+        <url-pattern>/unlock-account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>servlets.ChangePasswordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/change-password</url-pattern>
     </servlet-mapping>
 </web-app>
 

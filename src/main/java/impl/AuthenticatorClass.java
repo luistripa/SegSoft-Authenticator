@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class AuthenticatorClass implements Authenticator {
 
@@ -26,6 +27,7 @@ public class AuthenticatorClass implements Authenticator {
     private final static String ISSUER = "Authenticator";
     private final static int EXPIRATION_TIME = 60 * 30;
 
+    private Logger logger = Logger.getLogger(AuthenticatorClass.class.getName());
     private final DBService dbService;
 
     private static final AuthenticatorClass INSTANCE = new AuthenticatorClass();
@@ -37,8 +39,6 @@ public class AuthenticatorClass implements Authenticator {
     public AuthenticatorClass() {
         dbService = DBServiceClass.getInstance();
     }
-
-    // TODO: Log all operations to the database
 
     @Override
     public void create_account(String name, String pwd1, String pwd2) throws AccountAlreadyExistsException, DifferentPasswordsException, AuthenticatorException {
@@ -55,6 +55,7 @@ public class AuthenticatorClass implements Authenticator {
 
         try {
             DBServiceClass.getInstance().createAccount(name, hash, false, false);
+            logger.info("Account created: " + name);
 
         } catch (SQLException e) {
             throw new AuthenticatorException(e);
@@ -74,6 +75,7 @@ public class AuthenticatorClass implements Authenticator {
                 }
 
                 DBServiceClass.getInstance().deleteAccount(name);
+                logger.info("Account deleted: " + name);
             }
 
         } catch (SQLException e) {
@@ -84,7 +86,10 @@ public class AuthenticatorClass implements Authenticator {
     @Override
     public Optional<Account> get_account(String name) throws AuthenticatorException {
         try {
-            return DBServiceClass.getInstance().getAccount(name);
+            Optional<Account> account = DBServiceClass.getInstance().getAccount(name);
+
+            logger.info("Account retrieved: " + name);
+            return account;
 
         } catch (SQLException e) {
             throw new AuthenticatorException(e);
@@ -97,11 +102,58 @@ public class AuthenticatorClass implements Authenticator {
             throw new DifferentPasswordsException();
         }
 
-        // TODO: Consider checking if account exists
-
         try {
             String hash = Hashing.sha256().hashString(pwd1, StandardCharsets.UTF_8).toString();
             DBServiceClass.getInstance().changePassword(name, hash);
+            logger.info("Password changed: " + name);
+
+        } catch (SQLException e) {
+            throw new AuthenticatorException(e);
+        }
+    }
+
+    @Override
+    public void lock_account(String username) throws AuthenticatorException, AccountLockedException, UndefinedAccountException {
+        try {
+            Optional<Account> acc = get_account(username);
+
+            if (acc.isPresent()) {
+                Account account = acc.get();
+
+                if (account.isLocked()) {
+                    throw new AccountLockedException();
+                }
+
+                dbService.lockAccount(username);
+                logger.info("Account locked: " + username);
+
+            } else {
+                throw new UndefinedAccountException();
+            }
+
+        } catch (SQLException e) {
+            throw new AuthenticatorException(e);
+        }
+    }
+
+    @Override
+    public void unlock_account(String username) throws AuthenticatorException, AccountUnlockedException, UndefinedAccountException {
+        try {
+            Optional<Account> acc = get_account(username);
+
+            if (acc.isPresent()) {
+                Account account = acc.get();
+
+                if (!account.isLocked()) {
+                    throw new AccountUnlockedException();
+                }
+
+                dbService.unlockAccount(username);
+                logger.info("Account unlocked: " + username);
+
+            } else {
+                throw new UndefinedAccountException();
+            }
 
         } catch (SQLException e) {
             throw new AuthenticatorException(e);
@@ -128,6 +180,7 @@ public class AuthenticatorClass implements Authenticator {
                 }
 
                 DBServiceClass.getInstance().login(name);
+                logger.info("Account logged in: " + name);
                 return account;
 
             } else {
@@ -158,6 +211,7 @@ public class AuthenticatorClass implements Authenticator {
             Optional<Account> acc = DBServiceClass.getInstance().getAccount(username);
 
             if(acc.isPresent()) {
+                logger.info("Account authenticated: " + username);
                 return acc.get();
             }
 
@@ -177,6 +231,7 @@ public class AuthenticatorClass implements Authenticator {
         try {
             String name = acc.getName();
             DBServiceClass.getInstance().logout(name);
+            logger.info("Account logged out: " + name);
 
         } catch (SQLException e) {
             throw new AuthenticatorException(e);

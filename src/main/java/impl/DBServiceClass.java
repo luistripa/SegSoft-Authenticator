@@ -58,6 +58,20 @@ public class DBServiceClass implements DBService {
     }
 
     @Override
+    public void lockAccount(String name) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("UPDATE accounts SET is_locked = true WHERE username = ?;");
+        stmt.setString(1, name);
+        stmt.executeUpdate();
+    }
+
+    @Override
+    public void unlockAccount(String name) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("UPDATE accounts SET is_locked = false WHERE username = ?;");
+        stmt.setString(1, name);
+        stmt.executeUpdate();
+    }
+
+    @Override
     public Optional<Account> getAccount(String name) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM accounts WHERE username = ?;");
         stmt.setString(1, name);

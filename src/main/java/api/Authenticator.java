@@ -33,7 +33,7 @@ public interface Authenticator {
      *
      * @param name The name of the account to delete
      */
-    void delete_account(String name) throws SQLException, AccountUnlockedException;
+    void delete_account(String name) throws AccountUnlockedException;
 
     /**
      * Returns a clone (readonly) from an existing account object.
@@ -55,6 +55,25 @@ public interface Authenticator {
      * @param pwd2 Password confirmation (plaintext)
      */
     void change_pwd(String name, String pwd1, String pwd2) throws DifferentPasswordsException, AuthenticatorException;
+
+    /**
+     * Locks an account.
+     *
+     * Locked accounts cannot be logged into.
+     * Only locked accounts can be deleted.
+     *
+     * @param username The name of the account to lock
+     */
+    void lock_account(String username) throws AuthenticatorException, AccountLockedException, UndefinedAccountException;
+
+    /**
+     * Unlocks an account.
+     *
+     * Only an unlocked account can be logged into.
+     *
+     * @param username The username of the account to unlock
+     */
+    void unlock_account(String username) throws AuthenticatorException, AccountUnlockedException, UndefinedAccountException;
 
     /**
      * Authenticates the caller.
