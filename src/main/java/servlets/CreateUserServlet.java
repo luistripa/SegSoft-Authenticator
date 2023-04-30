@@ -45,11 +45,8 @@ public class CreateUserServlet extends HttpServlet {
         out.println(webPage);
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String confpassword = request.getParameter("confpassword");
-
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             Account account = authenticator.check_authenticated_request(req, res);
 
