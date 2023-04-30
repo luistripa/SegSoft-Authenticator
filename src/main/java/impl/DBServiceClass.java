@@ -2,7 +2,9 @@ package impl;
 
 import api.Account;
 import api.DBService;
+import com.google.common.hash.Hashing;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Optional;
 
@@ -26,6 +28,22 @@ public class DBServiceClass implements DBService {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(CONNECTION_STRING);
+
+            // Create accounts table
+            Statement stmt = conn.createStatement();
+            stmt.execute("CREATE TABLE IF NOT EXISTS accounts (username TEXT PRIMARY KEY, password_hash TEXT NOT NULL, is_locked BOOLEAN NOT NULL, logged_in BOOLEAN NOT NULL DEFAULT FALSE);");
+
+            // Create a root account if it doesn't exist
+            Optional<Account> root = getAccount("root");
+
+            if (root.isEmpty()) {
+                PreparedStatement statement = conn.prepareStatement("INSERT INTO accounts (username, password_hash, is_locked, logged_in) VALUES (?, ?, ?, ?);");
+                statement.setString(1, "root");
+                statement.setString(2, Hashing.sha256().hashString("password", StandardCharsets.UTF_8).toString());
+                statement.setBoolean(3, false);
+                statement.setBoolean(4, false);
+                statement.executeUpdate();
+            }
 
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
