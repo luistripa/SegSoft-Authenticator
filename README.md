@@ -11,13 +11,8 @@ in the Tomcat's `lib` folder.
 
 ## How to run
 
-- Place this repo inside the `webapps` folder of your tomcat installation
-- Run `mvn compile`. This will place all necessary files in the `WEB-INF/classes` folder
+- Clone the project to the directory of your choice
+- Run `mvn compile package`. This will create a `target` folder with the `.war` file.
+- Copy the `.war` file to the Tomcat's `webapps` folder
 - Start the tomcat server using `catalina.bat run` (Windows) or `catalina.sh run` (Mac/Linux)
 - Open `http://localhost:8080/myApp/` in your browser
-
-## Database setup
-
-The database doesn't have any tables on the first run.
-You must create them by using the file present in `sql/create-db.sql` file.
-Use the IntelliJ builtin database tools to help with that.
