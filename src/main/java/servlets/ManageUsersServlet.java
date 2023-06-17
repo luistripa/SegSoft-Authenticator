@@ -1,17 +1,16 @@
 package servlets;
 
-import api.Account;
-import api.Authenticator;
-import api.DBService;
-import api.exceptions.AuthenticationException;
-import api.exceptions.UndefinedAccountException;
-import impl.AuthenticatorClass;
-import impl.DBServiceClass;
+import api.authenticator.Account;
+import api.authenticator.Authenticator;
+import api.AuthenticatorDBService;
+import api.authenticator.exceptions.AuthenticationException;
+import api.authenticator.exceptions.UndefinedAccountException;
+import impl.authenticator.AuthenticatorClass;
+import impl.authenticator.AuthenticatorDBServiceClass;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -44,7 +43,7 @@ public class ManageUsersServlet extends HttpServlet {
             </html>
             """;
 
-    private static final DBService dbService = DBServiceClass.getInstance();
+    private static final AuthenticatorDBService dbService = AuthenticatorDBServiceClass.getInstance();
 
     private static final Authenticator authenticator = AuthenticatorClass.getInstance();
 

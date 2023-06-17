@@ -1,4 +1,4 @@
-package api.exceptions;
+package api.authenticator.exceptions;
 
 /**
  * Exception thrown when the user authentication fails.

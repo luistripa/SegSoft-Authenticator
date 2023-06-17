@@ -1,4 +1,4 @@
-package api.exceptions;
+package api.authenticator.exceptions;
 
 /**
  * Exception thrown when creating an account where pwd1 and pwd2 are different.

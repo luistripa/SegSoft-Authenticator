@@ -1,9 +1,9 @@
-package impl;
+package impl.authenticator;
 
-import api.Account;
-import api.Authenticator;
-import api.DBService;
-import api.exceptions.*;
+import api.authenticator.Account;
+import api.authenticator.Authenticator;
+import api.AuthenticatorDBService;
+import api.authenticator.exceptions.*;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -28,7 +28,7 @@ public class AuthenticatorClass implements Authenticator {
     private final static int EXPIRATION_TIME = 60 * 30;
 
     private Logger logger = Logger.getLogger(AuthenticatorClass.class.getName());
-    private final DBService dbService;
+    private final AuthenticatorDBService dbService;
 
     private static final AuthenticatorClass INSTANCE = new AuthenticatorClass();
 
@@ -37,7 +37,7 @@ public class AuthenticatorClass implements Authenticator {
     }
 
     public AuthenticatorClass() {
-        dbService = DBServiceClass.getInstance();
+        dbService = AuthenticatorDBServiceClass.getInstance();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AuthenticatorClass implements Authenticator {
         String hash = Hashing.sha256().hashString(pwd1, StandardCharsets.UTF_8).toString();
 
         try {
-            DBServiceClass.getInstance().createAccount(name, hash, false, false);
+            AuthenticatorDBServiceClass.getInstance().createAccount(name, hash, false, false);
             logger.info("Account created: " + name);
 
         } catch (SQLException e) {
@@ -65,7 +65,7 @@ public class AuthenticatorClass implements Authenticator {
     @Override
     public void delete_account(String name) throws AuthenticatorException, AccountUnlockedException {
         try {
-            Optional<Account> acc = DBServiceClass.getInstance().getAccount(name);
+            Optional<Account> acc = AuthenticatorDBServiceClass.getInstance().getAccount(name);
 
             if (acc.isPresent()) {
                 Account account = acc.get();
@@ -74,7 +74,7 @@ public class AuthenticatorClass implements Authenticator {
                     throw new AccountUnlockedException();
                 }
 
-                DBServiceClass.getInstance().deleteAccount(name);
+                AuthenticatorDBServiceClass.getInstance().deleteAccount(name);
                 logger.info("Account deleted: " + name);
             }
 
@@ -86,7 +86,7 @@ public class AuthenticatorClass implements Authenticator {
     @Override
     public Optional<Account> get_account(String name) throws AuthenticatorException {
         try {
-            Optional<Account> account = DBServiceClass.getInstance().getAccount(name);
+            Optional<Account> account = AuthenticatorDBServiceClass.getInstance().getAccount(name);
 
             logger.info("Account retrieved: " + name);
             return account;
@@ -104,7 +104,7 @@ public class AuthenticatorClass implements Authenticator {
 
         try {
             String hash = Hashing.sha256().hashString(pwd1, StandardCharsets.UTF_8).toString();
-            DBServiceClass.getInstance().changePassword(name, hash);
+            AuthenticatorDBServiceClass.getInstance().changePassword(name, hash);
             logger.info("Password changed: " + name);
 
         } catch (SQLException e) {
@@ -165,7 +165,7 @@ public class AuthenticatorClass implements Authenticator {
             AuthenticationException, AuthenticatorException {
 
         try {
-            Optional<Account> acc = DBServiceClass.getInstance().getAccount(name);
+            Optional<Account> acc = AuthenticatorDBServiceClass.getInstance().getAccount(name);
 
             if (acc.isPresent()) {
                 Account account = acc.get();
@@ -179,7 +179,7 @@ public class AuthenticatorClass implements Authenticator {
                     throw new AuthenticationException();
                 }
 
-                DBServiceClass.getInstance().login(name);
+                AuthenticatorDBServiceClass.getInstance().login(name);
                 logger.info("Account logged in: " + name);
                 return account;
 
@@ -208,7 +208,7 @@ public class AuthenticatorClass implements Authenticator {
 
             String username = decodedJWT.getSubject();
 
-            Optional<Account> acc = DBServiceClass.getInstance().getAccount(username);
+            Optional<Account> acc = AuthenticatorDBServiceClass.getInstance().getAccount(username);
 
             if(acc.isPresent()) {
                 logger.info("Account authenticated: " + username);
@@ -230,7 +230,7 @@ public class AuthenticatorClass implements Authenticator {
     public void logout(Account acc) throws AuthenticatorException {
         try {
             String name = acc.getName();
-            DBServiceClass.getInstance().logout(name);
+            AuthenticatorDBServiceClass.getInstance().logout(name);
             logger.info("Account logged out: " + name);
 
         } catch (SQLException e) {

@@ -1,6 +1,7 @@
 package impl;
 
-import api.Account;
+import api.access_control.Role;
+import api.authenticator.Account;
 
 public class AccountClass implements Account {
 
@@ -8,6 +9,7 @@ public class AccountClass implements Account {
     private String hash;
     private final boolean locked;
     private boolean logged_in;
+    private Role role;
 
     public AccountClass(String name, String hash, boolean locked) {
         this.name = name;
@@ -16,11 +18,12 @@ public class AccountClass implements Account {
         this.logged_in = false;
     }
 
-    public AccountClass(String name, String hash, boolean locked, boolean logged_in) {
+    public AccountClass(String name, String hash, boolean locked, boolean logged_in, Role role) {
         this.name = name;
         this.hash = hash;
         this.locked = locked;
         this.logged_in = logged_in;
+        this.role = role;
     }
 
     @Override
@@ -51,5 +54,10 @@ public class AccountClass implements Account {
     @Override
     public void setLoggedIn(boolean logged_in) {
         this.logged_in = logged_in;
+    }
+
+    @Override
+    public Role getRole() {
+        return role;
     }
 }

@@ -1,9 +1,9 @@
 package servlets;
 
-import api.Authenticator;
-import api.exceptions.AuthenticationException;
-import api.exceptions.UndefinedAccountException;
-import impl.AuthenticatorClass;
+import api.authenticator.Authenticator;
+import api.authenticator.exceptions.AuthenticationException;
+import api.authenticator.exceptions.UndefinedAccountException;
+import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

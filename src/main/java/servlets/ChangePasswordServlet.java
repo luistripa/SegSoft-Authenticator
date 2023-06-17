@@ -1,12 +1,11 @@
 package servlets;
 
-import api.Account;
-import api.Authenticator;
-import api.exceptions.AccountAlreadyExistsException;
-import api.exceptions.AuthenticationException;
-import api.exceptions.DifferentPasswordsException;
-import api.exceptions.UndefinedAccountException;
-import impl.AuthenticatorClass;
+import api.authenticator.Account;
+import api.authenticator.Authenticator;
+import api.authenticator.exceptions.AuthenticationException;
+import api.authenticator.exceptions.DifferentPasswordsException;
+import api.authenticator.exceptions.UndefinedAccountException;
+import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

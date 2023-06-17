@@ -1,9 +1,11 @@
 package api;
 
+import api.authenticator.Account;
+
 import java.sql.SQLException;
 import java.util.Optional;
 
-public interface DBService {
+public interface AuthenticatorDBService {
 
     /**
      * Creates a new account in the database.

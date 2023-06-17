@@ -1,4 +1,6 @@
-package api;
+package api.authenticator;
+
+import api.access_control.Role;
 
 public interface Account {
 
@@ -13,4 +15,6 @@ public interface Account {
     void setHash(String hash);
 
     void setLoggedIn(boolean logged_in);
+
+    Role getRole();
 }
