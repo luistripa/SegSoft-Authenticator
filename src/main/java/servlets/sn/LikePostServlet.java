@@ -10,6 +10,7 @@ import api.authenticator.exceptions.UndefinedAccountException;
 import impl.access_control.AccessControllerClass;
 import impl.access_control.PageResource;
 import impl.authenticator.AuthenticatorClass;
+import sn.PageObject;
 import sn.PostObject;
 import sn.SN;
 
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class LikePostServlet extends HttpServlet {
 
@@ -26,6 +28,7 @@ public class LikePostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         try {
             authenticator.check_authenticated_request(req, resp);
 
@@ -39,13 +42,44 @@ public class LikePostServlet extends HttpServlet {
             PostObject post = sn.getPost(postId);
             int pageId = post.getPageId();
 
-            accessController.checkPermission(capability, new PageResource(pageId), Operation.LIKE_UNLIKE_POST);
+            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.LIKE_UNLIKE_POST);
+            req.getSession().setAttribute("capability", capability);
 
-            sn.like(postId, pageId);
+            // Get the page of the user that is liking/unliking the post
+            PageObject userPage = null;
+            List<PageObject> allPages = sn.getAllPages();
+            for (PageObject page : allPages) {
+                if (page.getUserId().equals(capability.getAccount().getName())) {
+                    userPage = page;
+                    break;
+                }
+            }
+
+            if (userPage == null) {
+                throw new UndefinedAccountException();
+            }
+
+            List<PageObject> likes = sn.getLikes(postId);
+
+            // Check if the user has already liked the post
+            boolean liked = false;
+            for (PageObject like : likes) {
+                if (like.getUserId().equals(capability.getAccount().getName())) {
+                    liked = true;
+                    break;
+                }
+            }
+
+            if (liked) {
+                sn.unlike(postId, userPage.getPageId());
+
+            } else {
+                sn.like(postId, userPage.getPageId());
+            }
 
             sn.disconnect();
 
-            resp.sendRedirect("/myApp/page?page_id=" + pageId);
+            resp.sendRedirect("/myApp/post?post_id=" + postId);
 
         } catch (AuthenticationException e) {
             resp.sendRedirect("/myApp/error_pages/authentication_error.html");

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 public class PostDetailServlet extends HttpServlet {
@@ -44,9 +45,21 @@ public class PostDetailServlet extends HttpServlet {
             int pageId = post.getPageId();
             PageObject page = sn.getPage(pageId);
 
-            // TODO: Check if user has already liked this post
+            List<PageObject> likes = sn.getLikes(postId);
 
-            accessController.checkPermission(capability, new PageResource(pageId), Operation.READ_POST);
+            sn.disconnect();
+
+            // Check if current user has liked the post
+            boolean liked = false;
+            for (PageObject like : likes) {
+                if (like.getUserId().equals(capability.getAccount().getName())) {
+                    liked = true;
+                    break;
+                }
+            }
+
+            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.READ_POST);
+            req.getSession().setAttribute("capability", capability);
 
             URL resource = getClass().getResource("/templates/sn/post.pug");
 
@@ -55,12 +68,11 @@ public class PostDetailServlet extends HttpServlet {
                     "author", page.getUserId(),
                     "page_id", post.getPageId(),
                     "text", post.getPostText(),
-                    "date", post.getPostDate()
+                    "date", post.getPostDate(),
+                    "liked", liked
             );
 
             String render = Pug4J.render(resource, model);
-
-            sn.disconnect();
 
             resp.getWriter().println(render);
 

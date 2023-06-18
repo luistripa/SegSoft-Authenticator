@@ -20,11 +20,26 @@ public class DeleteUserServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        URL resource = getClass().getResource("/templates/delete-user.pug");
+        try {
+            Account account = authenticator.check_authenticated_request(req, res);
 
-        String render = Pug4J.render(resource, null);
+            if (!account.getName().equals("root")) {
+                res.sendRedirect("/myApp/error_pages/root_only_error.html");
+                return;
+            }
 
-        res.getWriter().println(render);
+            URL resource = getClass().getResource("/templates/delete-user.pug");
+
+            String render = Pug4J.render(resource, null);
+
+            res.getWriter().println(render);
+
+        } catch (AuthenticationException e) {
+            res.sendRedirect("/myApp/error_pages/authentication_error.html");
+
+        } catch (UndefinedAccountException e) {
+            res.sendRedirect("/myApp/error_pages/undefined_account_error.html");
+        }
     }
 
     @Override

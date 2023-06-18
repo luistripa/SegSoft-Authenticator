@@ -3,6 +3,7 @@ package servlets.sn;
 import api.access_control.AccessController;
 import api.access_control.Capability;
 import api.access_control.Operation;
+import api.access_control.exceptions.AccessControlException;
 import api.authenticator.Authenticator;
 import api.authenticator.exceptions.AuthenticationException;
 import api.authenticator.exceptions.UndefinedAccountException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class DeletePostServlet extends HttpServlet {
 
@@ -38,7 +40,16 @@ public class DeletePostServlet extends HttpServlet {
             PostObject post = sn.getPost(postId);
             int pageId = post.getPageId();
 
-            accessController.checkPermission(capability, new PageResource(pageId), Operation.DELETE_POST);
+            sn.disconnect();
+
+            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.DELETE_POST);
+            req.getSession().setAttribute("capability", capability);
+
+            sn = new SN();
+
+            sn.deletePost(post);
+
+            sn.disconnect();
 
             resp.sendRedirect("/myApp/page?page_id=" + pageId);
 

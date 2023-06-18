@@ -2,10 +2,7 @@ package impl.access_control;
 
 import api.AccessControlDBService;
 import api.access_control.*;
-import api.access_control.exceptions.AccessControlException;
-import api.access_control.exceptions.OperationNotFoundException;
-import api.access_control.exceptions.RoleAlreadyExistsException;
-import api.access_control.exceptions.RoleNotFoundException;
+import api.access_control.exceptions.*;
 import api.authenticator.Account;
 
 import java.sql.SQLException;
@@ -20,8 +17,21 @@ public class AccessControllerClass implements AccessController {
 
     private final AccessControlDBService accessControlService;
 
+    private int currentCode;
+
     public AccessControllerClass() {
         accessControlService = AccessControlDBServiceClass.getInstance();
+        generateNewCode();
+    }
+
+    @Override
+    public int currentCode() {
+        return currentCode;
+    }
+
+    @Override
+    public void generateNewCode() {
+        currentCode = (int) (Math.random() * 1000000);
     }
 
     @Override
@@ -111,7 +121,9 @@ public class AccessControllerClass implements AccessController {
     @Override
     public Capability getCapability(Account account) {
         try {
-            return accessControlService.getCapability(account);
+            Capability capability = accessControlService.getCapability(account);
+            capability.setCode(currentCode);
+            return capability;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -119,9 +131,19 @@ public class AccessControllerClass implements AccessController {
     }
 
     @Override
-    public void checkPermission(Capability capability, Resource resource, Operation operation) throws AccessControlException {
-        if(!capability.hasPermission(resource, operation)) {
+    public Capability checkPermission(Capability capability, Resource resource, Operation operation) throws AccessControlException {
+        Capability cap;
+        if (!capability.validateCode(currentCode)) {
+            cap = getCapability(capability.getAccount());
+
+        } else {
+            cap = capability;
+        }
+
+        if (!cap.hasPermission(resource, operation)) {
             throw new AccessControlException();
         }
+
+        return cap;
     }
 }

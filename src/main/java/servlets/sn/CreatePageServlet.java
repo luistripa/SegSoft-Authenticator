@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 
 public class CreatePageServlet extends HttpServlet {
 
@@ -55,7 +54,8 @@ public class CreatePageServlet extends HttpServlet {
 
             Capability capability = (Capability) req.getSession().getAttribute("capability");
 
-            accessController.checkPermission(capability, new PageResource(-1), Operation.CREATE_PAGE);
+            capability = accessController.checkPermission(capability, new PageResource(-1), Operation.CREATE_PAGE);
+            req.getSession().setAttribute("capability", capability);
 
             String pageTitle = req.getParameter("page_title");
             String username = req.getParameter("username");
@@ -86,6 +86,8 @@ public class CreatePageServlet extends HttpServlet {
             accessController.grantPermission(account, new PageResource(pageObject.getPageId()), Operation.APPROVE_FOLLOW_REQUEST);
             accessController.grantPermission(account, new PageResource(pageObject.getPageId()), Operation.READ_POST);
             accessController.grantPermission(account, new PageResource(pageObject.getPageId()), Operation.LIKE_UNLIKE_POST);
+
+            accessController.generateNewCode();
 
             resp.sendRedirect("/myApp/manage-users");
 

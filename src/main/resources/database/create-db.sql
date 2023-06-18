@@ -32,7 +32,7 @@ CREATE TABLE role_permissions (
 
     PRIMARY KEY (role_id, resource_id, operation_id),
     FOREIGN KEY (role_id) REFERENCES roles(role_id),
-    FOREIGN KEY (resource_id) REFERENCES page(page_id),
+    FOREIGN KEY (resource_id) REFERENCES page(page_id) ON DELETE CASCADE,
     FOREIGN KEY (operation_id) REFERENCES operations(operation_id)
 );
 
@@ -41,8 +41,8 @@ CREATE TABLE account_permissions (
     resource_id INTEGER NOT NULL,
     operation_id TEXT NOT NULL,
 
-    FOREIGN KEY (username) REFERENCES accounts(username),
-    FOREIGN KEY (resource_id) REFERENCES page(page_id),
+    FOREIGN KEY (username) REFERENCES accounts(username) ON DELETE CASCADE,
+    FOREIGN KEY (resource_id) REFERENCES page(page_id) ON DELETE CASCADE,
     FOREIGN KEY (operation_id) REFERENCES operations(operation_id)
 );
 

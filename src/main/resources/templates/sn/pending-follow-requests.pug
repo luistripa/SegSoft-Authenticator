@@ -16,27 +16,25 @@ html
                     li.nav-item
                         a.nav-link(href="/myApp/pending-follow-requests")= "Follow Requests"
 
-        div.container.mt-2
-
-            a(href="/myApp/manage-users")
+        div.mt-3.container
+            a(href="/myApp/home")
                 span
                     i.bi.bi-arrow-left
                     span= " Back"
 
-            h1.mt-2= "Create a new page"
-            form(method="post")
+            h1.mt-2.text-info= "Follow Requests"
 
-                div.form-group
-                    label(for="username")= "Username"
-                    input.form-control(type="text" id="username" name="username" placeholder="Username")
+            div.list-group.mt-2
+                each request in requests
+                    div.list-group-item
+                        span= request.getUserId() + " has requested to follow you"
 
-                div.mt-1.form-group
-                    label(for="page_title")= "Page"
-                    input.form-control(type="text" id="page_title" name="page_title" placeholder="Page Title")
+                        span= " "
 
-                div.mt-1.form-group
-                    label(for="email")= "E-mail"
-                    input.form-control(type="text" id="email" name="email" placeholder="E-mail")
+                        form(method="post" action="/myApp/pending-follow-requests?follower_id=" + request.getPageId() + "&action=accept")
+                            button.mt-2.ml-2.btn.btn-success.btn-sm(type="submit")= "Accept Request"
 
-                button.mt-2.btn.btn-primary.btn-sm(type="submit")= "Create Page"
+                        span= " "
 
+                        form(method="post" action="/myApp/pending-follow-requests?follower_id=" + request.getPageId() + "&action=reject")
+                            button.mt-2.ml-2.btn.btn-danger.btn-sm(type="submit")= "Deny Request"

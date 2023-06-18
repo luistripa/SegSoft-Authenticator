@@ -139,7 +139,7 @@ public class AccessControlDBServiceClass implements AccessControlDBService {
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING)) {
             Role role = account.getRole();
 
-            Capability capability = new Capability();
+            Capability capability = new Capability(account);
 
             // Get role-specific permissions
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM role_permissions WHERE role_id = ?;");

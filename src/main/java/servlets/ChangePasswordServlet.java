@@ -22,11 +22,21 @@ public class ChangePasswordServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        URL resource = getClass().getResource("/templates/change-password.pug");
+        try {
+            authenticator.check_authenticated_request(request, response);
 
-        String render = Pug4J.render(resource, null);
+            URL resource = getClass().getResource("/templates/change-password.pug");
 
-        response.getWriter().println(render);
+            String render = Pug4J.render(resource, null);
+
+            response.getWriter().println(render);
+
+        } catch (AuthenticationException e) {
+            response.sendRedirect("/myApp/error_pages/authentication_error.html");
+
+        } catch (UndefinedAccountException e) {
+            response.sendRedirect("/myApp/error_pages/undefined_account_error.html");
+        }
     }
 
     @Override

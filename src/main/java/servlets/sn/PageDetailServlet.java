@@ -45,12 +45,14 @@ public class PageDetailServlet extends HttpServlet {
             String pageIdString = req.getParameter("page_id");
             int pageId = Integer.valueOf(pageIdString);
 
-            accessController.checkPermission(capability, new PageResource(pageId), Operation.READ_PAGE);
+            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.READ_PAGE);
+            req.getSession().setAttribute("capability", capability);
 
             // Verifies if user can read posts
             boolean can_read_posts = false;
             try {
-                accessController.checkPermission(capability, new PageResource(pageId), Operation.READ_POST);
+                capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.READ_POST);
+                req.getSession().setAttribute("capability", capability);
                 can_read_posts = true;
             } catch (Exception ignored) {}
 
@@ -71,6 +73,15 @@ public class PageDetailServlet extends HttpServlet {
                 });
             }
 
+            List<PageObject> pendingFollowers = sn.getPendingFollowers(pageId);
+            boolean is_pending_follower = false;
+            for (PageObject pendingFollower : pendingFollowers) {
+                if (pendingFollower.getUserId().equals(account.getName())) {
+                    is_pending_follower = true;
+                    break;
+                }
+            }
+
             PageObject page = sn.getPage(pageId);
 
             URL resource = getClass().getResource("/templates/sn/page-detail.pug");
@@ -82,6 +93,7 @@ public class PageDetailServlet extends HttpServlet {
                             "user_id", page.getUserId()
                     ),
                     "can_read_posts", can_read_posts,
+                    "follower_pending", is_pending_follower,
                     "posts", posts
             );
 

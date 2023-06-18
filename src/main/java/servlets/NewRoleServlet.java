@@ -27,8 +27,10 @@ public class NewRoleServlet extends HttpServlet {
         try {
             Account account = authenticator.check_authenticated_request(req, resp);
 
-            if (!account.getName().equals("root"))
-                throw new AuthenticationException();
+            if(!account.getName().equals("root")) {
+                resp.sendRedirect("/myApp/error_pages/root_only_error.html");
+                return;
+            }
 
             URL resource = getClass().getResource("/templates/new-role.pug");
 
@@ -49,8 +51,10 @@ public class NewRoleServlet extends HttpServlet {
         try {
             Account account = authenticator.check_authenticated_request(req, resp);
 
-            if (!account.getName().equals("root"))
-                throw new AuthenticationException();
+            if(!account.getName().equals("root")) {
+                resp.sendRedirect("/myApp/error_pages/root_only_error.html");
+                return;
+            }
 
             String roleId = req.getParameter("role");
 

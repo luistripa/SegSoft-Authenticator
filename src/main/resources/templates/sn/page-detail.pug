@@ -21,19 +21,22 @@ html
 
                 span= " "
 
-                if can_read_posts == false
-                    button.mt-2.ml-2.btn.btn-primary.btn-sm(type="submit")= "Follow User"
+
+                if can_read_posts
+                    form(method="post" action="/myApp/follow-requests?page_id=" + page.id + "&action=unfollow")
+                        button.mt-2.ml-2.btn.btn-danger.btn-sm(type="submit")= "Unfollow User"
+                    div.list-group.mt-2
+                        each post in posts
+                            a.list-group-item.list-group-item-action(href="/myApp/post?post_id=" + post.id)= post.text
+
+                    if posts.size() == 0
+                        h5.mt-5.text= "There are no posts in this page."
+                else
+                    if follower_pending
+                        form
+                            button.mt-2.ml-2.btn.btn-secondary.btn-sm(type="submit" disabled)= "Pending Follow Request"
+                    else
+                        form(method="post" action="/myApp/follow-requests?page_id=" + page.id + "&action=request")
+                            button.mt-2.ml-2.btn.btn-primary.btn-sm(type="submit")= "Follow User"
 
                     h5.mt-5.text= "You can't see the posts from this page."
-                else
-                    button.mt-2.ml-2.btn.btn-danger.btn-sm(type="submit")= "Unfollow User"
-                    each post in posts
-                        div.row.mb-2.mt-4
-                            a.text-decoration-none(href="/myApp/post?post_id=" + post.id)
-                                div.card
-                                    h5.card-header= post.text
-                                    div.card-body
-                                        form(method="post" action="/myApp/like-post?post_id=" + post.id)
-                                            button.mt-2.btn.btn-success.btn-sm(type="submit")
-                                                i.bi.bi-hand-thumbs-up
-                                                span= " Like"

@@ -9,6 +9,10 @@ import api.authenticator.exceptions.UndefinedAccountException;
 
 public interface AccessController {
 
+    int currentCode();
+
+    void generateNewCode();
+
     Role newRole(String roleId) throws RoleAlreadyExistsException;
 
     void setRole(Account account, Role role) throws RoleNotFoundException, UndefinedAccountException;
@@ -23,5 +27,5 @@ public interface AccessController {
 
     Capability getCapability(Account account);
 
-    void checkPermission(Capability capability, Resource resource, Operation operation) throws AccessControlException;
+    Capability checkPermission(Capability capability, Resource resource, Operation operation) throws AccessControlException;
 }

@@ -11,6 +11,7 @@ import de.neuland.pug4j.Pug4J;
 import impl.access_control.AccessControllerClass;
 import impl.access_control.PageResource;
 import impl.authenticator.AuthenticatorClass;
+import sn.PageObject;
 import sn.SN;
 
 import javax.servlet.ServletException;
@@ -19,9 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 
-public class CreatePostServlet extends HttpServlet {
+public class DeletePageServlet extends HttpServlet {
 
     Authenticator authenticator = AuthenticatorClass.getInstance();
     AccessController accessController = AccessControllerClass.getInstance();
@@ -31,15 +31,7 @@ public class CreatePostServlet extends HttpServlet {
         try {
             authenticator.check_authenticated_request(req, resp);
 
-            String pageIdString = req.getParameter("page_id");
-            int pageId = Integer.parseInt(pageIdString);
-
-            Capability capability = (Capability) req.getSession().getAttribute("capability");
-
-            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.CREATE_POST);
-            req.getSession().setAttribute("capability", capability);
-
-            URL resource = getClass().getResource("/templates/sn/create-new-post.pug");
+            URL resource = getClass().getResource("/templates/sn/delete-page.pug");
 
             String render = Pug4J.render(resource, null);
 
@@ -50,9 +42,6 @@ public class CreatePostServlet extends HttpServlet {
 
         } catch (UndefinedAccountException e) {
             resp.sendRedirect("/myApp/error_pages/undefined_account_error.html");
-
-        } catch (AccessControlException e) {
-            resp.sendRedirect("/myApp/error_pages/access_control_error.html");
         }
     }
 
@@ -61,25 +50,27 @@ public class CreatePostServlet extends HttpServlet {
         try {
             authenticator.check_authenticated_request(req, resp);
 
+            Capability capability = (Capability) req.getSession().getAttribute("capability");
+
             String pageIdString = req.getParameter("page_id");
             int pageId = Integer.parseInt(pageIdString);
 
-            Capability capability = (Capability) req.getSession().getAttribute("capability");
-
-            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.CREATE_POST);
+            capability = accessController.checkPermission(capability, new PageResource(pageId), Operation.DELETE_PAGE);
             req.getSession().setAttribute("capability", capability);
 
-            String text = req.getParameter("post-text");
-
             SN sn = new SN();
-            sn.newPost(pageId, LocalDate.now().toString(), text);
 
-            resp.sendRedirect("/myApp/page?page_id=" + pageId);
+            PageObject pageObject = sn.getPage(pageId);
+            sn.deletePage(pageObject);
 
             sn.disconnect();
 
+            accessController.generateNewCode();
+
+            resp.sendRedirect("/myApp/manage-users");
+
         } catch (AuthenticationException e) {
-           resp.sendRedirect("/myApp/error_pages/authentication_error.html");
+            resp.sendRedirect("/myApp/error_pages/authentication_error.html");
 
         } catch (UndefinedAccountException e) {
             resp.sendRedirect("/myApp/error_pages/undefined_account_error.html");

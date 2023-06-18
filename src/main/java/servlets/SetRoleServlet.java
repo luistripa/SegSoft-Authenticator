@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class SetRoleServlet extends HttpServlet {
 
@@ -30,8 +29,10 @@ public class SetRoleServlet extends HttpServlet {
         try {
             Account account = authenticator.check_authenticated_request(req, resp);
 
-            if(!account.getName().equals("root"))
-                throw new AuthenticationException();
+            if(!account.getName().equals("root")) {
+                resp.sendRedirect("/myApp/error_pages/root_only_error.html");
+                return;
+            }
 
             URL resource = getClass().getResource("/templates/set-role.pug");
 
@@ -52,8 +53,10 @@ public class SetRoleServlet extends HttpServlet {
         try {
             Account account = authenticator.check_authenticated_request(req, resp);
 
-            if(!account.getName().equals("root"))
-                throw new AuthenticationException();
+            if(!account.getName().equals("root")) {
+                resp.sendRedirect("/myApp/error_pages/root_only_error.html");
+                return;
+            }
 
             String username = req.getParameter("username");
             String roleId = req.getParameter("role");

@@ -168,5 +168,32 @@
         <url-pattern>/create-page</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>DeletePageServlet</servlet-name>
+        <servlet-class>servlets.sn.DeletePageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeletePageServlet</servlet-name>
+        <url-pattern>/delete-page</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PendingFollowRequestsServlet</servlet-name>
+        <servlet-class>servlets.sn.PendingFollowRequestsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PendingFollowRequestsServlet</servlet-name>
+        <url-pattern>/pending-follow-requests</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FollowRequestsServlet</servlet-name>
+        <servlet-class>servlets.sn.FollowRequestsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FollowRequestsServlet</servlet-name>
+        <url-pattern>/follow-requests</url-pattern>
+    </servlet-mapping>
+
 </web-app>
 
