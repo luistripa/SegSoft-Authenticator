@@ -33,9 +33,16 @@ html
                     h5.card-header= text
                     div.card-body
                         form(method="post" action="/myApp/like-post?post_id=" + id)
-                            button.mt-2.btn.btn-success.btn-sm(type="submit")
-                                i.bi.bi-hand-thumbs-up
-                                span= " Like"
+
+                            if liked
+                                button.mt-2.btn.btn-secondary.btn-sm(type="submit")
+                                    i.bi.bi-hand-thumbs-down
+                                    span= " Remove like"
+                            else
+                                button.mt-2.btn.btn-success.btn-sm(type="submit")
+                                    i.bi.bi-hand-thumbs-up
+                                    span= " Like"
+
                         form(method="post" action="/myApp/delete-post?post_id=" + id)
                             button.mt-2.mr-1.btn.btn-danger.btn-sm(type="submit")= "Delete this post"
 

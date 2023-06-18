@@ -54,9 +54,17 @@ public class DeletePostServlet extends HttpServlet {
             resp.sendRedirect("/myApp/page?page_id=" + pageId);
 
         } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
+            resp.sendRedirect("/myApp/error_pages/authentication_error.html");
+
         } catch (UndefinedAccountException e) {
+            resp.sendRedirect("/myApp/error_pages/undefined_account_error.html");
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
+
+        } catch (AccessControlException e) {
+            resp.sendRedirect("/myApp/error_pages/access_control_error.html");
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

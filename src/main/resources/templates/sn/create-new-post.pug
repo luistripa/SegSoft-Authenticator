@@ -6,6 +6,16 @@ html
         title= "Title"
 
     body
+        div.navbar.navbar-expand-lg.navbar-dark.bg-secondary
+            div.container-fluid
+                ul.navbar-nav.me-auto
+                    li.nav-item
+                        a.nav-link(href="/myApp/home")= "Home"
+                    li.nav-item
+                        a.nav-link(href="/myApp/manage-users")= "Manage Users"
+                    li.nav-item
+                        a.nav-link(href="/myApp/pending-follow-requests")= "Follow Requests"
+
         div.mt-3.container
             a(href="/myApp/home")
                 span
