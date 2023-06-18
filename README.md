@@ -15,4 +15,4 @@ in the Tomcat's `lib` folder.
 - Run `mvn compile package`. This will create a `target` folder with the `.war` file.
 - Copy the `.war` file to the Tomcat's `webapps` folder
 - Start the tomcat server using `catalina.bat run` (Windows) or `catalina.sh run` (Mac/Linux)
-- Open `http://localhost:8080/myApp/` in your browser
+- Open `http://localhost:8080/myApp/manage-users` in your browser
