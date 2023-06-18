@@ -1,0 +1,59 @@
+html
+    head
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous")
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous")
+        title= "Title"
+    body
+        div.mt-3.container
+            h1= "Manage Users"
+            if logged_in
+                h5.text-info= "Logged in as " + username
+            else
+                h5.text-info= "Not logged in"
+            div.row.mb-2.mt-4
+                div.col-4
+                    a.text-decoration-none(href="/myApp/create-user")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Create User"
+                                p.card-text= "Creates a new user (root only)"
+                div.col-4
+                    a.text-decoration-none(href="/myApp/delete-user")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Delete User"
+                                p.card-text= "Deletes a new user (root only)"
+                div.col-4
+                    a.text-decoration-none(href="/myApp/change-password")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Change Password"
+                                p.card-text= "Changes the password for a given user"
+            div.row
+                div.col-4
+                    a.text-decoration-none(href="/myApp/lock-account")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Lock Account"
+                                p.card-text= "Locks an account. Account won't be able to login"
+
+                div.col-4
+                    a.text-decoration-none(href="/myApp/unlock-account")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Unlock Account"
+                                p.card-text= "Unlocks an account. Account will be able to login"
+
+                div.col-4
+                    if logged_in
+                        a.text-decoration-none(href="/myApp/logout")
+                            div.card
+                                div.card-body
+                                    h5.card-title= "Logout"
+                                    p.card-text= "Self explanatory..."
+                    else
+                        a.text-decoration-none(href="/myApp/login")
+                            div.card
+                                div.card-body
+                                    h5.card-title= "Login"
+                                    p.card-text= "Self explanatory..."

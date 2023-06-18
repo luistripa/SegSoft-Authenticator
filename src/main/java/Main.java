@@ -23,7 +23,7 @@ public class Main {
                 )
         );
 
-        String render = Pug4J.render("./template.pug", model);
+        String render = Pug4J.render("src/main/resources/templates/create-user.pug", model);
 
         // Write to file
         Files.write(Paths.get("./index.html"), render.getBytes());
