@@ -41,7 +41,7 @@ public interface Authenticator {
      * @param name The name of the account to return
      * @return Account object
      */
-    Optional<Account> get_account(String name) throws SQLException;
+    Account get_account(String name) throws SQLException;
 
     /**
      * Changes the password of the account.

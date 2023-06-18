@@ -46,7 +46,7 @@ public interface AuthenticatorDBService {
      * @return The account object
      * @throws SQLException If an error occurs while retrieving the account
      */
-    Optional<Account> getAccount(String name) throws SQLException;
+    Account getAccount(String name) throws SQLException;
 
     void login(String name) throws SQLException;
 

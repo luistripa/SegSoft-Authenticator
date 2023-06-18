@@ -35,7 +35,8 @@ public class ManageUsersServlet extends HttpServlet {
 
         Map<String, Object> model = Map.of(
                 "logged_in", account != null,
-                "username", account != null ? account.getName() : ""
+                "username", account != null ? account.getName() : "",
+                "role", account != null ? account.getRole().roleId() : ""
         );
 
         String render = Pug4J.render(resource, model);

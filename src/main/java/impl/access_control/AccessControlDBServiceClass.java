@@ -6,6 +6,7 @@ import api.access_control.Operation;
 import api.access_control.Resource;
 import api.access_control.Role;
 import api.authenticator.Account;
+import impl.Initialization;
 
 import java.sql.*;
 
@@ -26,6 +27,7 @@ public class AccessControlDBServiceClass implements AccessControlDBService {
     private AccessControlDBServiceClass() {
         try {
             Class.forName("org.sqlite.JDBC");
+            Initialization.initialize();
 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);

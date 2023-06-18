@@ -4,6 +4,7 @@ import api.access_control.Role;
 import api.authenticator.Account;
 import api.AuthenticatorDBService;
 import impl.AccountClass;
+import impl.Initialization;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.IOException;
@@ -29,29 +30,9 @@ public class AuthenticatorDBServiceClass implements AuthenticatorDBService {
     private AuthenticatorDBServiceClass() {
         try {
             Class.forName("org.sqlite.JDBC");
-            initDB();
+            Initialization.initialize();
 
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void initDB() {
-        try (InputStream in = getClass().getResourceAsStream("/database/create-db.sql")) {
-            if (in == null) {
-                throw new RuntimeException("Could not find create-db.sql");
-            }
-
-            try (Connection conn = DriverManager.getConnection(CONNECTION_STRING)) {
-                ScriptRunner sr = new ScriptRunner(conn);
-
-                sr.runScript(new InputStreamReader(in));
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
-        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -106,22 +87,22 @@ public class AuthenticatorDBServiceClass implements AuthenticatorDBService {
     }
 
     @Override
-    public Optional<Account> getAccount(String name) throws SQLException {
+    public Account getAccount(String name) throws SQLException {
         try (Connection conn = DriverManager.getConnection(CONNECTION_STRING)) {
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM accounts WHERE username = ?;");
             stmt.setString(1, name);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return Optional.of(new AccountClass(
+                return new AccountClass(
                         rs.getString("username"),
                         rs.getString("password_hash"),
                         rs.getBoolean("is_locked"),
                         rs.getBoolean("logged_in"),
                         new Role(rs.getString("role_id"))
-                ));
+                );
             } else {
-                return Optional.empty();
+                return null;
             }
         }
     }

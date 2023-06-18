@@ -10,23 +10,33 @@ import java.util.*;
 
 public class SN {
     
-    private String dburl = "jdbc:sqlite:/Users/luis_caires/Desktop/SoftwareSecurity/App/test.db";
+    private String dburl = "jdbc:sqlite:database.db";
 
     private static Connection theconnection = null;
 
     Statement stmt;
 	
     void connect() throws Exception {
-		if(theconnection==null)
+		if (theconnection == null)
 			theconnection = DriverManager.getConnection(dburl);
-    }
+	}
 
     static SN theapp = null;
 
-    SN() throws Exception {
+    public SN() throws Exception {
 		connect();
 		stmt=theconnection.createStatement();
     }
+
+	public void disconnect() {
+		if (theconnection != null)
+			try {
+				theconnection.close();
+				theconnection = null;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
 
     // Utils
 

@@ -21,10 +21,6 @@ CREATE TABLE accounts (
     FOREIGN KEY (role_id) REFERENCES roles(role_id)
 );
 
-CREATE TABLE IF NOT EXISTS resources(
-    resource_id INTEGER PRIMARY KEY
-);
-
 CREATE TABLE operations (
     operation_id TEXT PRIMARY KEY
 );
@@ -36,7 +32,7 @@ CREATE TABLE role_permissions (
 
     PRIMARY KEY (role_id, resource_id, operation_id),
     FOREIGN KEY (role_id) REFERENCES roles(role_id),
-    FOREIGN KEY (resource_id) REFERENCES resources(resource_id),
+    FOREIGN KEY (resource_id) REFERENCES page(page_id),
     FOREIGN KEY (operation_id) REFERENCES operations(operation_id)
 );
 
@@ -46,7 +42,7 @@ CREATE TABLE account_permissions (
     operation_id TEXT NOT NULL,
 
     FOREIGN KEY (username) REFERENCES accounts(username),
-    FOREIGN KEY (resource_id) REFERENCES resources(resource_id),
+    FOREIGN KEY (resource_id) REFERENCES page(page_id),
     FOREIGN KEY (operation_id) REFERENCES operations(operation_id)
 );
 

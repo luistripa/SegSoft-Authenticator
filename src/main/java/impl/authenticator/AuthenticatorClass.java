@@ -46,9 +46,9 @@ public class AuthenticatorClass implements Authenticator {
             throw new DifferentPasswordsException();
         }
 
-        Optional<Account> acc = this.get_account(name);
+        Account account = this.get_account(name);
 
-        if (acc.isPresent())
+        if (account != null)
             throw new AccountAlreadyExistsException();
 
         String hash = Hashing.sha256().hashString(pwd1, StandardCharsets.UTF_8).toString();
@@ -65,10 +65,9 @@ public class AuthenticatorClass implements Authenticator {
     @Override
     public void delete_account(String name) throws AuthenticatorException, AccountUnlockedException {
         try {
-            Optional<Account> acc = AuthenticatorDBServiceClass.getInstance().getAccount(name);
+            Account account = AuthenticatorDBServiceClass.getInstance().getAccount(name);
 
-            if (acc.isPresent()) {
-                Account account = acc.get();
+            if (account != null) {
 
                 if(!account.isLocked()) {
                     throw new AccountUnlockedException();
@@ -84,9 +83,9 @@ public class AuthenticatorClass implements Authenticator {
     }
 
     @Override
-    public Optional<Account> get_account(String name) throws AuthenticatorException {
+    public Account get_account(String name) throws AuthenticatorException {
         try {
-            Optional<Account> account = AuthenticatorDBServiceClass.getInstance().getAccount(name);
+            Account account = AuthenticatorDBServiceClass.getInstance().getAccount(name);
 
             logger.info("Account retrieved: " + name);
             return account;
@@ -115,10 +114,9 @@ public class AuthenticatorClass implements Authenticator {
     @Override
     public void lock_account(String username) throws AuthenticatorException, AccountLockedException, UndefinedAccountException {
         try {
-            Optional<Account> acc = get_account(username);
+            Account account = get_account(username);
 
-            if (acc.isPresent()) {
-                Account account = acc.get();
+            if (account != null) {
 
                 if (account.isLocked()) {
                     throw new AccountLockedException();
@@ -139,11 +137,9 @@ public class AuthenticatorClass implements Authenticator {
     @Override
     public void unlock_account(String username) throws AuthenticatorException, AccountUnlockedException, UndefinedAccountException {
         try {
-            Optional<Account> acc = get_account(username);
+            Account account = get_account(username);
 
-            if (acc.isPresent()) {
-                Account account = acc.get();
-
+            if (account != null) {
                 if (!account.isLocked()) {
                     throw new AccountUnlockedException();
                 }
@@ -165,11 +161,9 @@ public class AuthenticatorClass implements Authenticator {
             AuthenticationException, AuthenticatorException {
 
         try {
-            Optional<Account> acc = AuthenticatorDBServiceClass.getInstance().getAccount(name);
+            Account account = AuthenticatorDBServiceClass.getInstance().getAccount(name);
 
-            if (acc.isPresent()) {
-                Account account = acc.get();
-
+            if (account != null) {
                 if(account.isLocked()) {
                     throw new AccountLockedException();
                 }
@@ -208,11 +202,11 @@ public class AuthenticatorClass implements Authenticator {
 
             String username = decodedJWT.getSubject();
 
-            Optional<Account> acc = AuthenticatorDBServiceClass.getInstance().getAccount(username);
+            Account account = AuthenticatorDBServiceClass.getInstance().getAccount(username);
 
-            if(acc.isPresent()) {
+            if(account != null) {
                 logger.info("Account authenticated: " + username);
-                return acc.get();
+                return account;
             }
 
             throw new UndefinedAccountException();

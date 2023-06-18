@@ -7,9 +7,12 @@ html
         div.mt-3.container
             h1= "Manage Users"
             if logged_in
-                h5.text-info= "Logged in as " + username
+                h5.text-info= "Logged in as " + username + " (" + role + ")"
             else
                 h5.text-info= "Not logged in"
+
+            hr
+            h3= "Main Actions"
             div.row.mb-2.mt-4
                 div.col-4
                     if logged_in
@@ -25,6 +28,15 @@ html
                                     h5.card-title= "Login"
                                     p.card-text= "Self explanatory..."
                 div.col-4
+                    a.text-decoration-none(href="/myApp/home")
+                        div.card
+                            div.card-body
+                                h5.card-title= "SN Home"
+                                p.card-text= "Home page of social network"
+            hr
+            h3= "User Management"
+            div.row.mb-2.mt-4
+                div.col-4
                     a.text-decoration-none(href="/myApp/create-user")
                         div.card
                             div.card-body
@@ -36,13 +48,13 @@ html
                             div.card-body
                                 h5.card-title= "Delete User"
                                 p.card-text= "Deletes a new user (root only)"
-            div.row.mb-2
                 div.col-4
                     a.text-decoration-none(href="/myApp/change-password")
                         div.card
                             div.card-body
                                 h5.card-title= "Change Password"
                                 p.card-text= "Changes the password for a given user"
+            div.row.mb-2
                 div.col-4
                     a.text-decoration-none(href="/myApp/lock-account")
                         div.card
@@ -57,6 +69,8 @@ html
                                 h5.card-title= "Unlock Account"
                                 p.card-text= "Unlocks an account. Account will be able to login"
 
+            hr
+            h3= "Role Management"
             div.row.mb-2
                 div.col-4
                     a.text-decoration-none(href="/myApp/new-role")
@@ -71,10 +85,19 @@ html
                             div.card-body
                                 h5.card-title= "Set Role"
                                 p.card-text= "Sets a new role for a given account"
-
+            hr
+            h3= "Page Management"
+            div.row.mb-2
                 div.col-4
-                    a.text-decoration-none(href="/myApp/home")
+                    a.text-decoration-none(href="/myApp/create-page")
                         div.card
                             div.card-body
-                                h5.card-title= "SN Home"
-                                p.card-text= "Home page of social network"
+                                h5.card-title= "New Page"
+                                p.card-text= "Creates a new page for a given user"
+
+                div.col-4
+                    a.text-decoration-none(href="/myApp/delete-page")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Delete Page"
+                                p.card-text= "Deletes a given page"

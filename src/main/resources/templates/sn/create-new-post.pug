@@ -1,0 +1,22 @@
+html
+    head
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous")
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet")
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous")
+        title= "Title"
+
+    body
+        div.mt-3.container
+            a(href="/myApp/home")
+                span
+                    i.bi.bi-arrow-left
+                    span= " Back"
+
+            h2.mt-2.text= "Create a new post"
+
+            form(method="post")
+                div.form-group
+                    label(for="post_text")= "Post"
+                    textarea.form-control(rows=3 id="post_text" name="post-text" placeholder="What are you thinking about?")
+
+                button.mt-2.btn.btn-success.btn-sm(type="submit")= "Create Post"

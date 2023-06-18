@@ -87,5 +87,86 @@
         <url-pattern>/change-password</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>HomePageServlet</servlet-name>
+        <servlet-class>servlets.sn.HomePageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PageDetailServlet</servlet-name>
+        <servlet-class>servlets.sn.PageDetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PageDetailServlet</servlet-name>
+        <url-pattern>/page</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreatePostServlet</servlet-name>
+        <servlet-class>servlets.sn.CreatePostServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreatePostServlet</servlet-name>
+        <url-pattern>/create-post</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LikePostServlet</servlet-name>
+        <servlet-class>servlets.sn.LikePostServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LikePostServlet</servlet-name>
+        <url-pattern>/like-post</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PostDetailServlet</servlet-name>
+        <servlet-class>servlets.sn.PostDetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PostDetailServlet</servlet-name>
+        <url-pattern>/post</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeletePostServlet</servlet-name>
+        <servlet-class>servlets.sn.DeletePostServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeletePostServlet</servlet-name>
+        <url-pattern>/delete-post</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>NewRoleServlet</servlet-name>
+        <servlet-class>servlets.NewRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewRoleServlet</servlet-name>
+        <url-pattern>/new-role</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SetRoleServlet</servlet-name>
+        <servlet-class>servlets.SetRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetRoleServlet</servlet-name>
+        <url-pattern>/set-role</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreatePageServlet</servlet-name>
+        <servlet-class>servlets.sn.CreatePageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreatePageServlet</servlet-name>
+        <url-pattern>/create-page</url-pattern>
+    </servlet-mapping>
+
 </web-app>
 
