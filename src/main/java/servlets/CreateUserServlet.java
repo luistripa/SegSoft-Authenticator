@@ -3,6 +3,7 @@ package servlets;
 import api.authenticator.Account;
 import api.authenticator.Authenticator;
 import api.authenticator.exceptions.*;
+import de.neuland.pug4j.Pug4J;
 import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.ServletException;
@@ -11,38 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 
 public class CreateUserServlet extends HttpServlet {
-
-    private final String webPage = """
-            <html>
-                <head>
-                    <title>Create User</title>
-                </head>
-                <body>
-                    <h1>Create User</h1>
-                    <form action="create-user" method="POST">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
-                        <br>
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                        <br>
-                        <label for="confpassword">Confirm Password</label>
-                        <input type="password" id="confpassword" name="confpassword" required>
-                        <br>
-                        <input type="submit" value="Create User">
-                    </form>
-                </body>
-            </html> 
-            """;
 
     private final Authenticator authenticator = AuthenticatorClass.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        out.println(webPage);
+        URL resource = getClass().getResource("/templates/create-user.pug");
+
+        String render = Pug4J.render(resource, null);
+
+        response.getWriter().println(render);
     }
 
     @Override

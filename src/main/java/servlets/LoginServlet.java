@@ -5,6 +5,7 @@ import api.authenticator.Authenticator;
 import api.authenticator.exceptions.AccountLockedException;
 import api.authenticator.exceptions.AuthenticationException;
 import api.authenticator.exceptions.UndefinedAccountException;
+import de.neuland.pug4j.Pug4J;
 import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.http.HttpServlet;
@@ -13,32 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 
 public class LoginServlet extends HttpServlet {
-
-    private String webPage = """
-            <html>
-                <head>
-                    <title>Login</title>
-                </head>
-                <body>
-                    <h1>Login</h1>
-                    <form action="login" method="POST">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                        <input type="submit" value="Login">
-                    </form>
-                </body>
-            </html>
-            """;
 
     private final Authenticator authenticator = AuthenticatorClass.getInstance();
 
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        PrintWriter out = res.getWriter();
-        out.println(webPage);
+        URL resource = getClass().getResource("/templates/login.pug");
+
+        String render = Pug4J.render(resource, null);
+
+        res.getWriter().println(render);
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {

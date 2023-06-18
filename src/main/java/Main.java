@@ -16,11 +16,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, IOException, OperationNotFoundException, RoleNotFoundException, AccessControlException, InterruptedException, UndefinedAccountException {
         Map<String, Object> model = Map.of(
-                "posts", List.of(
-                        Map.of("title", "Post 1", "body", "Body 1"),
-                        Map.of("title", "Post 2", "body", "Body 2"),
-                        Map.of("title", "Post 3", "body", "Body 3")
-                )
+                "logged_in", false,
+                "username", "root"
         );
 
         String render = Pug4J.render("src/main/resources/templates/create-user.pug", model);
