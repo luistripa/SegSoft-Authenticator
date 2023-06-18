@@ -12,6 +12,19 @@ html
                 h5.text-info= "Not logged in"
             div.row.mb-2.mt-4
                 div.col-4
+                    if logged_in
+                        a.text-decoration-none(href="/myApp/logout")
+                            div.card
+                                div.card-body
+                                    h5.card-title= "Logout"
+                                    p.card-text= "Self explanatory..."
+                    else
+                        a.text-decoration-none(href="/myApp/login")
+                            div.card
+                                div.card-body
+                                    h5.card-title= "Login"
+                                    p.card-text= "Self explanatory..."
+                div.col-4
                     a.text-decoration-none(href="/myApp/create-user")
                         div.card
                             div.card-body
@@ -23,13 +36,13 @@ html
                             div.card-body
                                 h5.card-title= "Delete User"
                                 p.card-text= "Deletes a new user (root only)"
+            div.row.mb-2
                 div.col-4
                     a.text-decoration-none(href="/myApp/change-password")
                         div.card
                             div.card-body
                                 h5.card-title= "Change Password"
                                 p.card-text= "Changes the password for a given user"
-            div.row
                 div.col-4
                     a.text-decoration-none(href="/myApp/lock-account")
                         div.card
@@ -44,16 +57,24 @@ html
                                 h5.card-title= "Unlock Account"
                                 p.card-text= "Unlocks an account. Account will be able to login"
 
+            div.row.mb-2
                 div.col-4
-                    if logged_in
-                        a.text-decoration-none(href="/myApp/logout")
-                            div.card
-                                div.card-body
-                                    h5.card-title= "Logout"
-                                    p.card-text= "Self explanatory..."
-                    else
-                        a.text-decoration-none(href="/myApp/login")
-                            div.card
-                                div.card-body
-                                    h5.card-title= "Login"
-                                    p.card-text= "Self explanatory..."
+                    a.text-decoration-none(href="/myApp/new-role")
+                        div.card
+                            div.card-body
+                                h5.card-title= "New Role"
+                                p.card-text= "Creates a new role"
+
+                div.col-4
+                    a.text-decoration-none(href="/myApp/set-role")
+                        div.card
+                            div.card-body
+                                h5.card-title= "Set Role"
+                                p.card-text= "Sets a new role for a given account"
+
+                div.col-4
+                    a.text-decoration-none(href="/myApp/home")
+                        div.card
+                            div.card-body
+                                h5.card-title= "SN Home"
+                                p.card-text= "Home page of social network"

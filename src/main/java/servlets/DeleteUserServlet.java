@@ -3,6 +3,7 @@ package servlets;
 import api.authenticator.Account;
 import api.authenticator.Authenticator;
 import api.authenticator.exceptions.*;
+import de.neuland.pug4j.Pug4J;
 import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.ServletException;
@@ -11,32 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 
 public class DeleteUserServlet extends HttpServlet {
-
-    private final String webPage = """
-            <html>
-                <head>
-                    <title>Delete User</title>
-                </head>
-                <body>
-                    <h1>Delete User</h1>
-                    <form action="delete-user" method="POST">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
-                        <br>
-                        <input type="submit" value="Delete User">
-                    </form>
-                </body>
-            </html>
-            """;
 
     private static final Authenticator authenticator = AuthenticatorClass.getInstance();
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        PrintWriter out = res.getWriter();
-        out.println(webPage);
+        URL resource = getClass().getResource("/templates/delete-user.pug");
+
+        String render = Pug4J.render(resource, null);
+
+        res.getWriter().println(render);
     }
 
     @Override

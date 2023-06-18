@@ -1,29 +1,32 @@
 package api.access_control;
 
-import java.util.HashMap;
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class Capability {
 
-    private final Map<Operation, Set<Resource>> permissions;
+    private final Set<String> permissions_new;
 
     public Capability() {
-        permissions = new HashMap<>();
+        permissions_new = new HashSet<>();
     }
 
     public boolean hasPermission(Resource resource, Operation operation) {
-        return permissions.containsKey(operation) && permissions.get(operation).contains(resource);
+        String hash = getHash(String.valueOf(resource.getResourceId()), operation);
+
+        return permissions_new.contains(hash);
     }
 
     public void addPermission(Resource resource, Operation operation) {
-        permissions.putIfAbsent(operation, new HashSet<>());
-        permissions.get(operation).add(resource);
+        String hash = getHash(String.valueOf(resource.getResourceId()), operation);
+
+        permissions_new.add(hash);
     }
 
-    @Override
-    public String toString() {
-        return "Capability [permissions=" + permissions + "]";
+    private String getHash(String resourceId, Operation operation) {
+        return Hashing.sha256().hashString(resourceId + " - " + operation, StandardCharsets.UTF_8).toString();
     }
 }

@@ -3,6 +3,7 @@ package servlets;
 import api.authenticator.Account;
 import api.authenticator.Authenticator;
 import api.authenticator.exceptions.*;
+import de.neuland.pug4j.Pug4J;
 import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.ServletException;
@@ -11,32 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 
 public class LockAccountServlet extends HttpServlet {
-
-    private final String webPage = """
-            <html>
-                <head>
-                    <title>Lock Account</title>
-                </head>
-                <body>
-                    <h1>Lock Account</h1>
-                    <form action="lock-account" method="POST">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="username" required>
-                        <br>
-                        <input type="submit" value="Lock Account">
-                    </form>
-                </body>
-            </html> 
-            """;
 
     private final Authenticator authenticator = AuthenticatorClass.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        out.println(webPage);
+        URL resource = getClass().getResource("/templates/lock-account.pug");
+
+        String render = Pug4J.render(resource, null);
+
+        response.getWriter().println(render);
     }
 
     @Override

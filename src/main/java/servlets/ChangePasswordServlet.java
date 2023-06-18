@@ -5,6 +5,7 @@ import api.authenticator.Authenticator;
 import api.authenticator.exceptions.AuthenticationException;
 import api.authenticator.exceptions.DifferentPasswordsException;
 import api.authenticator.exceptions.UndefinedAccountException;
+import de.neuland.pug4j.Pug4J;
 import impl.authenticator.AuthenticatorClass;
 
 import javax.servlet.ServletException;
@@ -13,35 +14,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 
 public class ChangePasswordServlet extends HttpServlet {
-
-    private final String webPage = """
-            <html>
-                <head>
-                    <title>Change Password</title>
-                </head>
-                <body>
-                    <h1>Change Password</h1>
-                    <form action="change-password" method="POST">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" required>
-                        <br>
-                        <label for="confpassword">Confirm Password</label>
-                        <input type="password" id="confpassword" name="confpassword" required>
-                        <br>
-                        <input type="submit" value="Change Password">
-                    </form>
-                </body>
-            </html> 
-            """;
 
     private final Authenticator authenticator = AuthenticatorClass.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        out.println(webPage);
+        URL resource = getClass().getResource("/templates/change-password.pug");
+
+        String render = Pug4J.render(resource, null);
+
+        response.getWriter().println(render);
     }
 
     @Override

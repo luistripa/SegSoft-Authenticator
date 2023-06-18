@@ -20,7 +20,7 @@ public class Main {
                 "username", "root"
         );
 
-        String render = Pug4J.render("src/main/resources/templates/create-user.pug", model);
+        String render = Pug4J.render("src/main/resources/templates/logout.pug", model);
 
         // Write to file
         Files.write(Paths.get("./index.html"), render.getBytes());

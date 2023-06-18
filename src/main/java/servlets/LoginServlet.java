@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
             String token = authenticator.generateToken(account);
             session.setAttribute("token", token);
 
-            res.sendRedirect("/myApp/success_pages/logged_in_success.html");
+            res.sendRedirect("/myApp/manage-users");
 
         } catch (AccountLockedException e) {
             res.sendRedirect("/myApp/error_pages/account_locked_error.html");
