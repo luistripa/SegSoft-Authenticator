@@ -1,8 +1,4 @@
 
-
-INSERT INTO accounts (username, password_hash, is_locked, logged_in, role_id) VALUES ('luis', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', false, false, 'Authors');
-INSERT INTO accounts (username, password_hash, is_locked, logged_in, role_id) VALUES ('raquel', '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8', false, false, 'Authors');
-
 INSERT INTO role_permissions (role_id, resource_id, operation_id) VALUES ('Admins', -1, 'CREATE_PAGE');
 
 INSERT INTO page (page_id, user_id, page_title, email, page_pic) VALUES (1, 'root', 'Root page', 'root@root.com', 'page.png');
